@@ -1,0 +1,28 @@
+service: project-lambda
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  memorySize: 128
+  timeout: 10
+
+functions:
+  api:
+    handler: dist/lambda.handler
+    events:
+      - http:
+          path: '/'
+          method: any
+          cors: true
+      - http:
+          path: '{proxy+}'
+          method: any
+          cors: true
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverlessOffline:
+    httpPort: 3000
